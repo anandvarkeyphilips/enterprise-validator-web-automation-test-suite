@@ -25,8 +25,8 @@ public class EditorViewTest {
     private static WebAutomationService webAutomationService;
     private static WebDriver webDriver;
 
-    static private final String EDITOR_HTML_ID = "ace-editor";
-    static private final String APPLICATION_URL = "http://localhost:4200/editor";
+    static private final String EDITOR_HTML_ID = "editor";
+    static private final String APPLICATION_URL = "http://localhost:4200";
 
     @BeforeClass
     public static void setUpCommonTestCodeForAllTests() {
@@ -58,7 +58,7 @@ public class EditorViewTest {
         webDriver.findElement(By.id("validateYamlData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Valid YAML!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Valid YAML!!!"));
     }
 
     @Test
@@ -73,8 +73,9 @@ public class EditorViewTest {
         webDriver.findElement(By.id("validateYamlData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.attributeContains(By.id("validationResultBlock"), "class", "validation-message-failure"));
-        Assert.assertEquals("mapping values are not allowed here in 'string', line 7, column 27: pid.fail-on-write-error: true ^", webDriver.findElement(By.id("validationResultBlock")).getText());
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"), "class", "validation-message-failure"));
+        Assert.assertEquals("mapping values are not allowed here\n" + " in 'string', line 7, column 27:\n"
+                + "       pid.fail-on-write-error: true\n" + "                              ^\n", webDriver.findElement(By.id("validation-result-block")).getAttribute("textContent"));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class EditorViewTest {
         webDriver.findElement(By.id("validateJsonData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Valid JSON!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Valid JSON!!!"));
     }
 
     @Test
@@ -104,8 +105,8 @@ public class EditorViewTest {
         webDriver.findElement(By.id("validateJsonData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.attributeContains(By.id("validationResultBlock"), "class", "validation-message-failure"));
-        Assert.assertEquals("Expected a ',' or '}' at 129 [character 21 line 7]", webDriver.findElement(By.id("validationResultBlock")).getText());
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"), "class", "validation-message-failure"));
+        Assert.assertEquals("Expected a ',' or '}' at 129 [character 21 line 7]", webDriver.findElement(By.id("validation-result-block")).getAttribute("textContent"));
     }
 
     @Test
@@ -120,7 +121,7 @@ public class EditorViewTest {
         webDriver.findElement(By.id("formatJsonData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Formatted JSON!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Formatted JSON!!!"));
     }
 
     @Test
@@ -135,8 +136,8 @@ public class EditorViewTest {
         webDriver.findElement(By.id("formatJsonData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.attributeContains(By.id("validationResultBlock"), "class", "validation-message-failure"));
-        Assert.assertEquals("Expected a ',' or '}' at 129 [character 21 line 7]", webDriver.findElement(By.id("validationResultBlock")).getText());
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"), "class", "validation-message-failure"));
+        Assert.assertEquals("Expected a ',' or '}' at 129 [character 21 line 7]", webDriver.findElement(By.id("validation-result-block")).getAttribute("textContent"));
     }
 
     @Test
@@ -151,7 +152,7 @@ public class EditorViewTest {
         webDriver.findElement(By.id("formatXmlData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Formatted XML!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Formatted XML!!!"));
     }
 
     @Test
@@ -166,8 +167,8 @@ public class EditorViewTest {
         webDriver.findElement(By.id("formatXmlData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.attributeContains(By.id("validationResultBlock"), "class", "validation-message-failure"));
-        Assert.assertEquals("Element type \"pages1020\" must be followed by either attribute specifications, \">\" or \"/>\".", webDriver.findElement(By.id("validationResultBlock")).getText());
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"), "class", "validation-message-failure"));
+        Assert.assertEquals("Element type \"pages1020\" must be followed by either attribute specifications, \">\" or \"/>\".", webDriver.findElement(By.id("validation-result-block")).getAttribute("textContent"));
     }
 
     @Test
@@ -182,7 +183,7 @@ public class EditorViewTest {
         webDriver.findElement(By.id("encodeData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Encode Successful!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Encode Successful!!!"));
     }
 
     @Test
@@ -197,6 +198,6 @@ public class EditorViewTest {
         webDriver.findElement(By.id("decodeData")).click();
 
         new WebDriverWait(webDriver, Duration.ofSeconds(20).getSeconds())
-                .until(ExpectedConditions.textToBe(By.id("validationResultBlock"), "Decode Successful!!!"));
+                .until(ExpectedConditions.attributeContains(By.id("validation-result-block"),"textContent","Decode Successful!!!"));
     }
 }
